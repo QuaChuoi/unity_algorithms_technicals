@@ -248,7 +248,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boids: {fileID: 11400000, guid: e9e10e7d7b9d0ed48ad745ff14dcacca, type: 2}
   boidPrefab: {fileID: 5930003493743724800, guid: 859c7243f3c832b42ae07bfd944c679f, type: 3}
-  boidCount: 116
+  boidCount: 200
+  obstacles: {fileID: 11400000, guid: 0ae67f86e8369964a88740a54ae526da, type: 2}
+  obstaclePrefab: {fileID: 8195786118624148833, guid: 7c5e2e62f5638264dbda1541f0789a93, type: 3}
 --- !u!4 &451095109
 Transform:
   m_ObjectHideFlags: 0

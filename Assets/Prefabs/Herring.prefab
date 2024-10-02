@@ -607,6 +607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boundery: {fileID: 11400000, guid: 2c02fdd763730144fb14876bfb2e5b5b, type: 2}
   boids: {fileID: 11400000, guid: e9e10e7d7b9d0ed48ad745ff14dcacca, type: 2}
+  obstacles: {fileID: 11400000, guid: 0ae67f86e8369964a88740a54ae526da, type: 2}
   forwardSpeed: 5
 --- !u!114 &319139782407559911
 MonoBehaviour:

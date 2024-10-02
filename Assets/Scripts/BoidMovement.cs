@@ -7,9 +7,14 @@ public class BoidMovement : MonoBehaviour
 {
     [SerializeField] private Boundery boundery;
     [SerializeField] private ListBoidVariable boids;
+    [SerializeField] private ListObstacleVariable obstacles;
     private float searchRadius = 2f;
+    private float obstaclesearchRadius = 5f;
     private float visionAngle = 270f;
     public float forwardSpeed = 7f;
+    public float rushSpeed = 10f;
+    private float rushTime = 1f;
+    public float normalSpeed = 7f;
     private float turnSpeed = 16f;
     public Vector3 velocity { get; private set; }
     private void Start() {
@@ -18,17 +23,23 @@ public class BoidMovement : MonoBehaviour
     private void FixedUpdate()
     {
         velocity = Vector2.Lerp(velocity, CalculateVelocity(), (float)(turnSpeed / 2 * Time.fixedDeltaTime));
-        transform.position += velocity * Time.deltaTime;
+        transform.position += velocity * Time.fixedDeltaTime;
         LookRotation();
     }
 
     private Vector3 CalculateVelocity()
     {
         var boidsInRange = BoidsInRange();
+        var obstacleInRange = ObstacleInRange();
+        if (obstacleInRange.Count > 0)
+        {
+            StartCoroutine(ChangeSpeed());
+        }
         Vector2 velocity = ((Vector2)transform.forward
             + Separation(boidsInRange) * 1.5f
-            + Alignment(boidsInRange) * 0.1f
-            + Cohesion(boidsInRange) * 1.1f
+            + Alignment(boidsInRange) * 0.2f
+            + Cohesion(boidsInRange) * 1.2f
+            + ObstacleSeparation(obstacleInRange) * 1.9f
             ).normalized * forwardSpeed;
         return velocity;
     }
@@ -55,6 +66,20 @@ public class BoidMovement : MonoBehaviour
         var listBoid = boids.boidMovements.FindAll(boid => boid != this && (boid.transform.position - transform.position).magnitude < searchRadius && InVisionCone(boid.transform.position));
         return listBoid;
     }
+    //viết 1 funtion tượng tự nhu BoidsInRange() để tìm obstacle trong range
+    private List<ObstacleObj> ObstacleInRange()
+    {
+        var listObstacle = obstacles.obstacleObjs.FindAll(obstacle => (obstacle.transform.position - transform.position).magnitude < obstaclesearchRadius);
+        return listObstacle;
+    }
+
+    private IEnumerator ChangeSpeed()
+    {
+        forwardSpeed = rushSpeed;
+        yield return new WaitForSeconds(rushTime);
+        forwardSpeed = normalSpeed;
+    }
+
     // ktra tầm nhìn
     private bool InVisionCone(Vector2 targetPosition)
     {
@@ -74,6 +99,16 @@ public class BoidMovement : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(transform.position, boid.transform.position);
         }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, obstaclesearchRadius);
+
+        var obstaclesInRange = ObstacleInRange();
+        foreach (var obstacle in obstaclesInRange)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, obstacle.transform.position);
+        }
     }
 
     // tự tạo khoảng cách với các boid trong range
@@ -84,6 +119,16 @@ public class BoidMovement : MonoBehaviour
         {
             float ratio = Mathf.Clamp01((boid.transform.position - transform.position).magnitude / searchRadius);
             direction -= ratio * (Vector2)(boid.transform.position - transform.position);
+        }
+        return direction.normalized;
+    }
+    private Vector2 ObstacleSeparation(List<ObstacleObj> obstaclesInRange)
+    {
+        Vector2 direction = Vector2.zero;
+        foreach (var obstacle in obstaclesInRange)
+        {
+            float ratio = Mathf.Clamp01((obstacle.transform.position - transform.position).magnitude / obstaclesearchRadius);
+            direction -= ratio * (Vector2)(obstacle.transform.position - transform.position);
         }
         return direction.normalized;
     }
