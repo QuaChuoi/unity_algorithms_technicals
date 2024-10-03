@@ -7,13 +7,16 @@ public class PredatorMovement : MonoBehaviour
 {
     [SerializeField] private ListBoidVariable targets;
     private float forwardSpeed = 7f;
-    private float turnSpeed = 16f;
+    private float turnSpeed = 10f;
     private float searchRadius = 6f;
     private float visionAngle = 200f;
     private float chaseColdown = 6f;
     private BoidMovement chaseTarget;
     public Vector3 velocity { get; private set; }
-     private bool canRunClosestTarget = true;
+    private bool canRunClosestTarget = true;
+    private void Start() {
+
+    }
     private void FixedUpdate() 
     {
         MoveForward();
@@ -28,18 +31,8 @@ public class PredatorMovement : MonoBehaviour
     
     private void LookRotation()
     {
-        // Normalize the velocity vector to get the direction
-         Vector3 direction = velocity.normalized;
-
-         // Calculate the angle in degrees between the positive x-axis and the direction vector
-         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
-
-         // Create a quaternion representing the target rotation based on the calculated angle
-         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-
-         // Smoothly interpolate the current rotation towards the target rotation
-         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
-
+        Quaternion targetRotation = Quaternion.LookRotation(velocity) * Quaternion.Euler(velocity.x>0 ? 0 :180, 90, 90);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
     }
 
     private List<BoidMovement> TargetInRange()
@@ -51,7 +44,7 @@ public class PredatorMovement : MonoBehaviour
         private bool InVisionCone(Vector2 targetPosition)
     {
         Vector2 directionToPosition = targetPosition - (Vector2)transform.position;
-        float dotProduct = Vector2.Dot(transform.forward, directionToPosition);
+        float dotProduct = Vector2.Dot(transform.up, directionToPosition);
         float cosHalfVisonAngle = Mathf.Cos(visionAngle * 0.5f * Mathf.Deg2Rad);
         return dotProduct > cosHalfVisonAngle;
     }
@@ -66,8 +59,34 @@ public class PredatorMovement : MonoBehaviour
         {
             Gizmos.color = Color.white;
             Gizmos.DrawLine(transform.position, target.transform.position);
-        }    
+        }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + velocity);    
     }
+
+    // private void OnDrawGizmos() {
+    //     Gizmos.color = Color.white;
+    //     Gizmos.DrawWireSphere(transform.position, searchRadius);
+
+    //     var targetsInRange = TargetInRange();
+    //     foreach (var target in targetsInRange)
+    //     {
+    //         Gizmos.color = Color.white;
+    //         Gizmos.DrawLine(transform.position, target.transform.position);
+    //     }
+
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawLine(transform.position, transform.position + velocity);    
+
+    //     // vẽ gizmos biểu thị 3 trục của tranform bằng 3 màu  khác nhau
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawLine(transform.position, transform.position + transform.right);
+    //     Gizmos.color = Color.green;
+    //     Gizmos.DrawLine(transform.position, transform.position + transform.up);
+    //     Gizmos.color = Color.blue;
+    //     Gizmos.DrawLine(transform.position, transform.position + transform.forward);
+    // }
 
     private Vector3 CalculateVelocity()
     {

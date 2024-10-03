@@ -251,6 +251,7 @@ MonoBehaviour:
   boidCount: 200
   obstacles: {fileID: 11400000, guid: 0ae67f86e8369964a88740a54ae526da, type: 2}
   obstaclePrefab: {fileID: 8195786118624148833, guid: 7c5e2e62f5638264dbda1541f0789a93, type: 3}
+  obstacleCount: 2
 --- !u!4 &451095109
 Transform:
   m_ObjectHideFlags: 0
@@ -302,7 +303,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0, g: 0.03239035, b: 0.13962269, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

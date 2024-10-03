@@ -9,13 +9,13 @@ public class BoidMovement : MonoBehaviour
     [SerializeField] private ListBoidVariable boids;
     [SerializeField] private ListObstacleVariable obstacles;
     private float searchRadius = 2f;
-    private float obstaclesearchRadius = 5f;
+    private float obstaclesearchRadius = 6f;
     private float visionAngle = 270f;
     public float forwardSpeed = 7f;
-    public float rushSpeed = 10f;
-    private float rushTime = 1f;
+    public float rushSpeed = 16f;
+    private float rushTime = 0.6f;
     public float normalSpeed = 7f;
-    private float turnSpeed = 16f;
+    private float turnSpeed = 18f;
     public Vector3 velocity { get; private set; }
     private void Start() {
         
@@ -36,7 +36,7 @@ public class BoidMovement : MonoBehaviour
             StartCoroutine(ChangeSpeed());
         }
         Vector2 velocity = ((Vector2)transform.forward
-            + Separation(boidsInRange) * 1.5f
+            + Separation(boidsInRange) * 1.6f
             + Alignment(boidsInRange) * 0.2f
             + Cohesion(boidsInRange) * 1.2f
             + ObstacleSeparation(obstacleInRange) * 1.9f
@@ -57,7 +57,7 @@ public class BoidMovement : MonoBehaviour
 
         // Apply the interpolated rotation but keep the original z rotation
         Vector3 eulerAngles = interpolatedRotation.eulerAngles;
-        eulerAngles.z = (velocity.x <= 0) ? 115 : 295;
+        eulerAngles.z = (velocity.x <= 0) ? 60 : 295;
         transform.rotation = Quaternion.Euler(eulerAngles);
     }
 
