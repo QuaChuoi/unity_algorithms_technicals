@@ -566,11 +566,11 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4879945352450738691}
-  - screenRelativeHeight: 0.05
+  - screenRelativeHeight: 0.01
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3960861365595963256}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!95 &1993909065656837354
 Animator:
   serializedVersion: 5

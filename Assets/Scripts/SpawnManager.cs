@@ -18,7 +18,7 @@ public class SpawnManager : MonoBehaviour
         if (boids.boidTranform.Count > 0) boids.boidTranform.Clear(); 
         for (int i = 0; i < boidCount; i++)
         {
-            RandomInstantiate<Transform>(boidPrefab, boids.boidTranform, new Vector2(20f, 15f));
+            RandomInstantiate<Transform>(boidPrefab, boids.boidTranform, new Vector2(25f,20f));
         }
 
         // if(obstacles.obstacleObjs.Count > 0) obstacles.obstacleObjs.Clear();
@@ -36,7 +36,7 @@ public class SpawnManager : MonoBehaviour
         float direction = Random.Range(0f, 360f);
         Vector3 position = new Vector2(Random.Range(-range.x, range.x), Random.Range(-range.y, range.y));
         GameObject gameObject = Instantiate(prefab, position, Quaternion.Euler(Vector3.forward * direction) * prefab.transform.localRotation);
-        gameObject.transform.SetParent(transform);
+        // gameObject.transform.SetParent(transform);
         list.Add(gameObject.GetComponent<T>());
     }
 }

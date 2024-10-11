@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.Jobs;
 using Unity.Collections;
 using Unity.Mathematics;
-using JetBrains.Annotations;
-using UnityEngine.UIElements.Experimental;
 using Unity.Jobs;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Burst;
 
 public class BoidTransform : MonoBehaviour
 {
@@ -30,6 +28,7 @@ public class BoidTransform : MonoBehaviour
         public float3 position;
         public float3 velocity;
     }
+    [BurstCompile]
     private struct BoidMovementsJob : IJobParallelForTransform
     {
         [NativeDisableContainerSafetyRestriction]
@@ -89,7 +88,7 @@ public class BoidTransform : MonoBehaviour
                 // + Alignment(boidsInRange) * 0.2f
                 + alignment
                 // + Cohesion(boidsInRange) * 1.2f
-                + cohesion
+                + cohesion * 1.2f
                 // + ObstacleSeparation(obstacleInRange) * 1.9f
                 ).normalized * forwardSpeed;
                 // Debug.Log("forward :" + currentForward + " | separation:" + separation + " | velocity:" + velocity);
