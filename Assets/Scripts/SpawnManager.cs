@@ -13,22 +13,22 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private float obstacleCount;
 
-    private void Start()
+    private void Awake() 
     {
-        if (boids.boidMovements.Count > 0) boids.boidMovements.Clear(); 
+        if (boids.boidTranform.Count > 0) boids.boidTranform.Clear(); 
         for (int i = 0; i < boidCount; i++)
         {
-            RandomInstantiate<BoidMovement>(boidPrefab, boids.boidMovements, new Vector2(15f, 10f));
+            RandomInstantiate<Transform>(boidPrefab, boids.boidTranform, new Vector2(20f, 15f));
         }
 
-        if(obstacles.obstacleObjs.Count > 0) obstacles.obstacleObjs.Clear();
-        if (obstaclePrefab != null)  
-        {
-            for (int i = 0; i < obstacleCount; i++)
-            {
-                RandomInstantiate<ObstacleObj>(obstaclePrefab, obstacles.obstacleObjs, new Vector2(8f, 8f));
-            }
-        }
+        // if(obstacles.obstacleObjs.Count > 0) obstacles.obstacleObjs.Clear();
+        // if (obstaclePrefab != null)  
+        // {
+        //     for (int i = 0; i < obstacleCount; i++)
+        //     {
+        //         RandomInstantiate<ObstacleObj>(obstaclePrefab, obstacles.obstacleObjs, new Vector2(8f, 8f));
+        //     }
+        // }
     }
 
     private void RandomInstantiate<T>(GameObject prefab, List<T> list, Vector2 range)

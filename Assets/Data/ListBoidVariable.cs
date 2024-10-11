@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/List GameObject Variable")]
 public class ListBoidVariable : ScriptableObject
 {
-    public List<BoidMovement> boidMovements = new List<BoidMovement>();
+    public List<Transform> boidTranform = new List<Transform>();
 }
