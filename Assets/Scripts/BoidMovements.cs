@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using Unity.Jobs;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Burst;
+using Unity.VisualScripting;
 
 public class BoidTransform : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class BoidTransform : MonoBehaviour
         public float deltaTime;
         public float searchRadius;
         public float visionAngle;
+        public float xLimit;
+        public float yLimit;
         public void Execute(int index, TransformAccess transform)
         {
             Vector3 velocity = boidData[index].velocity;
@@ -65,6 +68,7 @@ public class BoidTransform : MonoBehaviour
             var separation = Vector2.zero;
             var alignment = Vector2.zero;
             var cohesion = Vector2.zero;
+            var boxLimit = BoxLimit(transform.position);
             Vector2 currentForward = transform.localToWorldMatrix.MultiplyVector(Vector3.forward);
             var boidsInRange = BoidsInRange(transform.position, currentForward);
             var boidCount = boidsInRange.Length;
@@ -90,6 +94,7 @@ public class BoidTransform : MonoBehaviour
                 // + Cohesion(boidsInRange) * 1.2f
                 + cohesion * 1.2f
                 // + ObstacleSeparation(obstacleInRange) * 1.9f
+                + boxLimit * 3f
                 ).normalized * forwardSpeed;
                 // Debug.Log("forward :" + currentForward + " | separation:" + separation + " | velocity:" + velocity);
             return velocity;
@@ -133,6 +138,26 @@ public class BoidTransform : MonoBehaviour
             else center = position;
             return (center - position).normalized;
         }
+        private Vector2 BoxLimit(Vector2 position)
+        {
+            if (position.x <= -xLimit)
+            {
+                return Vector2.right;
+            }
+            if (position.x >= xLimit)
+            {
+                return Vector2.left;
+            }
+            if (position.y <= -yLimit)
+            {
+                return Vector2.up;
+            }
+            if (position.y >= yLimit)
+            {
+                return Vector2.down;
+            }
+            return Vector2.zero;
+        }
     }
     private void Start()
     {
@@ -160,6 +185,8 @@ public class BoidTransform : MonoBehaviour
             forwardSpeed = forwardSpeed,
             searchRadius = searchRadius,
             visionAngle = visionAngle,
+            xLimit = boundery.XLimit,
+            yLimit = boundery.YLimit,
             deltaTime = Time.fixedDeltaTime,
         };
         JobHandle boidMovementsJobHandle = boidMovementsJob.Schedule(transformAccessArray);

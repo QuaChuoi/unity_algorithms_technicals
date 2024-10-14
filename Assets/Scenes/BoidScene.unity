@@ -248,7 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boids: {fileID: 11400000, guid: e9e10e7d7b9d0ed48ad745ff14dcacca, type: 2}
   boidPrefab: {fileID: 5930003493743724800, guid: 859c7243f3c832b42ae07bfd944c679f, type: 3}
-  boidCount: 300
+  boidCount: 1000
   obstacles: {fileID: 11400000, guid: 0ae67f86e8369964a88740a54ae526da, type: 2}
   obstaclePrefab: {fileID: 8195786118624148833, guid: 7c5e2e62f5638264dbda1541f0789a93, type: 3}
   obstacleCount: 2
@@ -328,7 +328,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 28
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -392,9 +392,6 @@ MonoBehaviour:
   boundery: {fileID: 11400000, guid: 2c02fdd763730144fb14876bfb2e5b5b, type: 2}
   boids: {fileID: 11400000, guid: e9e10e7d7b9d0ed48ad745ff14dcacca, type: 2}
   obstacles: {fileID: 11400000, guid: 0ae67f86e8369964a88740a54ae526da, type: 2}
-  forwardSpeed: 7
-  rushSpeed: 16
-  normalSpeed: 7
 --- !u!4 &1422104888
 Transform:
   m_ObjectHideFlags: 0
